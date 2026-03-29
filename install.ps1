@@ -75,30 +75,41 @@ $installDir = $null
 
 # Case 1: Already inside bloatray-cli
 if (Test-Path "package.json") {
-    $pkg = Get-Content "package.json" -Raw | ConvertFrom-Json
-    if ($pkg.name -eq "bloatray-cli") {
-        $installDir = (Get-Location).Path
-        Write-Host "  [OK] Found BloatRay in current directory" -ForegroundColor Green
-    }
+    try {
+        $pkg = Get-Content "package.json" -Raw | ConvertFrom-Json
+        if ($pkg.name -eq "bloatray-cli") {
+            $installDir = (Get-Location).Path
+            Write-Host "  [OK] Found BloatRay in current directory" -ForegroundColor Green
+        }
+    } catch {}
 }
 
-# Case 2: bloatray-cli is a subfolder
+# Case 2: bloatray-cli is a subfolder of current dir
 if ((-not $installDir) -and (Test-Path "bloatray-cli/package.json")) {
     $installDir = (Resolve-Path "bloatray-cli").Path
     Write-Host "  [OK] Found BloatRay in ./bloatray-cli" -ForegroundColor Green
 }
 
-# Case 3: Clone from GitHub
+# Case 3: Clone from GitHub into a safe user-writable location
 if (-not $installDir) {
-    $installDir = Join-Path (Get-Location).Path "bloatray-cli"
-    Write-Host "  Cloning from GitHub..." -ForegroundColor DarkGray
-    git clone https://github.com/iamaako/bloatray-cli.git $installDir 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "  [X] Clone failed. Run this script from inside the bloatray-cli folder." -ForegroundColor Red
-        Write-Host "      cd bloatray-cli; .\install.ps1" -ForegroundColor Yellow
-        exit 1
+    # Use Desktop so it works even if PowerShell opened in System32
+    $safeDir = Join-Path ([Environment]::GetFolderPath("Desktop")) "bloatray-cli"
+
+    # If already cloned on Desktop before, reuse it
+    if (Test-Path (Join-Path $safeDir "package.json")) {
+        $installDir = $safeDir
+        Write-Host "  [OK] Found existing clone on Desktop" -ForegroundColor Green
+    } else {
+        Write-Host "  Cloning to Desktop..." -ForegroundColor DarkGray
+        git clone https://github.com/iamaako/bloatray-cli.git $safeDir 2>&1 | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "  [X] Clone failed. Try manually:" -ForegroundColor Red
+            Write-Host "      cd Desktop; git clone https://github.com/iamaako/bloatray-cli.git" -ForegroundColor Yellow
+            exit 1
+        }
+        $installDir = $safeDir
+        Write-Host "  [OK] Cloned to $installDir" -ForegroundColor Green
     }
-    Write-Host "  [OK] Cloned to $installDir" -ForegroundColor Green
 }
 
 Set-Location $installDir
