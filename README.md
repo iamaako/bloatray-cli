@@ -91,6 +91,12 @@ irm https://raw.githubusercontent.com/iamaako/bloatray-cli/main/install.ps1 | ie
 
 This single command will clone, install, build, setup demos, and auto-launch the interactive terminal.
 
+### CMD (Command Prompt)
+
+```cmd
+curl -o install.cmd https://raw.githubusercontent.com/iamaako/bloatray-cli/main/install.cmd && install.cmd
+```
+
 ### Manual Setup
 
 ```bash
