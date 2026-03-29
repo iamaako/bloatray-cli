@@ -1,0 +1,43 @@
+{
+  "name": "bloatray-cli",
+  "version": "1.0.0",
+  "description": "BloatRay — The Dependency X-Ray. Scan, visualize, and auto-clean unused dependency bloat from your Node.js projects.",
+  "main": "./dist/index.js",
+  "bin": {
+    "bloatray": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "setup": "node setup.js",
+    "dev": "ts-node src/index.ts",
+    "test:demo1": "node dist/index.js scan --dir test-projects/demo-1-heavy-bloat",
+    "test:demo2": "node dist/index.js scan --dir test-projects/demo-2-clean-project",
+    "test:demo3": "node dist/index.js scan --dir test-projects/demo-3-devdep-bloat",
+    "test:demo4": "node dist/index.js scan --dir test-projects/demo-4-typescript-bloat",
+    "test:demo5": "node dist/index.js scan --dir test-projects/demo-5-react-bloat",
+    "test:demo6": "node dist/index.js scan --dir test-projects/demo-6-empty-project"
+  },
+  "keywords": [
+    "cli",
+    "dependency",
+    "bloat",
+    "unused",
+    "depcheck",
+    "dx",
+    "developer-experience",
+    "cleanup"
+  ],
+  "author": "Aarif Khan",
+  "license": "MIT",
+  "dependencies": {
+    "@clack/prompts": "^0.9.1",
+    "commander": "^12.1.0",
+    "depcheck": "^1.4.7",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0"
+  }
+}

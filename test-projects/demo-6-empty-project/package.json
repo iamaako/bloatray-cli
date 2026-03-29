@@ -1,0 +1,8 @@
+{
+  "name": "demo-empty-project",
+  "version": "1.0.0",
+  "description": "Edge case: project with no dependencies at all",
+  "main": "src/index.js",
+  "dependencies": {},
+  "devDependencies": {}
+}

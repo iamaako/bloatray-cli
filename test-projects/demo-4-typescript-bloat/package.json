@@ -1,0 +1,24 @@
+{
+  "name": "demo-typescript-bloat",
+  "version": "1.0.0",
+  "description": "TypeScript project with mixed used/unused deps",
+  "main": "src/index.ts",
+  "dependencies": {
+    "zod": "^3.23.8",
+    "dayjs": "^1.11.11",
+    "nanoid": "^3.3.7",
+    "commander": "^12.1.0",
+    "inquirer": "^9.2.22",
+    "ora": "^5.4.1",
+    "figlet": "^1.7.0",
+    "boxen": "^5.1.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "@types/node": "^20.14.0",
+    "@types/figlet": "^1.5.8",
+    "@types/inquirer": "^9.0.7",
+    "vitest": "^1.6.0",
+    "tsx": "^4.15.0"
+  }
+}
