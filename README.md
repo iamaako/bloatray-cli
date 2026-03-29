@@ -1,8 +1,26 @@
-# BloatRay — The Dependency X-Ray
+<div align="center">
 
-> **Track E: Dependency X-Ray** | DX-Ray Hackathon | Built by **Aarif Khan**
+```
+  ██████╗ ██╗      ██████╗  █████╗ ████████╗██████╗  █████╗ ██╗   ██╗
+  ██╔══██╗██║     ██╔═══██╗██╔══██╗╚══██╔══╝██╔══██╗██╔══██╗╚██╗ ██╔╝
+  ██████╔╝██║     ██║   ██║███████║   ██║   ██████╔╝███████║ ╚████╔╝
+  ██╔══██╗██║     ██║   ██║██╔══██║   ██║   ██╔══██╗██╔══██║  ╚██╔╝
+  ██████╔╝███████╗╚██████╔╝██║  ██║   ██║   ██║  ██║██║  ██║   ██║
+  ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝
+```
 
-Scan, visualize, and auto-clean unused dependency bloat from your Node.js projects. One command to detect hidden bloat, see the damage, and fix it.
+### The Dependency X-Ray
+
+**Scan. Visualize. Auto-Clean.**
+
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+[![Track](https://img.shields.io/badge/DX--Ray_Hackathon-Track_E-ff00ff)](https://github.com/iamaako/bloatray-cli)
+
+</div>
+
+---
 
 <p align="center">
   <img src="screenshots/hero.png" alt="BloatRay Hero" width="48%" />
@@ -14,379 +32,149 @@ Scan, visualize, and auto-clean unused dependency bloat from your Node.js projec
 
 ---
 
-## The 3 Core Questions
+## 🔍 What Is BloatRay?
 
-| Question | Answer |
+BloatRay is a CLI tool that scans your Node.js project, finds **unused dependencies** hiding in your `node_modules`, shows you exactly how much disk space they waste, and lets you **auto-remove** them in one click.
+
+> Built by **Aarif Khan** for the **DX-Ray Hackathon** — Track E: Dependency X-Ray
+
+---
+
+## 🧠 The 3 Core Questions
+
+| # | Question | Answer |
+|---|---|---|
+| 🔎 | **What DX problem am I scanning?** | Hidden dependency bloat — unused packages that slow CI/CD, waste disk, and confuse developers. |
+| 📊 | **What does my tool output?** | A CLI dashboard with health score, bloat size, impact bars, ranked table, and 1-click cleanup. |
+| 📦 | **Where does the data come from?** | `package.json` + source code import analysis via `depcheck` + real `node_modules` size calculation. |
+
+---
+
+## ⚡ How It Works
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        BloatRay Pipeline                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   📦 package.json         🔎 SCAN                               │
+│       +                  ──────────►  Find unused packages      │
+│   📁 source files                     Calculate real disk size  │
+│                                                                 │
+│                           📊 VISUALIZE                          │
+│                          ──────────►  Health Score (0-100%)     │
+│                                       Impact bars + table       │
+│                                       Total MB of bloat         │
+│                                                                 │
+│                           🧹 ACT                                │
+│                          ──────────►  npm uninstall (auto)      │
+│                                       1-click cleanup           │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+| Step | What Happens |
 |---|---|
-| **What DX problem am I scanning?** | Hidden dependency bloat and unused packages that slow down CI/CD and developer onboarding. |
-| **What does my tool output?** | A CLI dashboard highlighting unused packages, their disk size impact, and a 1-click auto-cleanup prompt. |
-| **Where does the data come from?** | Project `package.json`, local `node_modules` size calculation, and source code import analysis via `depcheck`. |
+| 🔎 **SCAN** | Reads `package.json`, analyzes all imports with `depcheck`, calculates real `node_modules` size per package |
+| 📊 **VISUALIZE** | Renders health score bar, color-coded impact bars, ranked bloat table, total waste in MB |
+| 🧹 **ACT** | Prompts to auto-remove unused packages via `npm uninstall` — clean your project in one click |
 
 ---
 
-## The 3-Step Pipeline
+## 🚀 Quick Install
 
-1. **SCAN** — Uses `depcheck` to analyze `package.json` + source code imports. Calculates real disk size of each unused package inside `node_modules`.
-2. **VISUALIZE** — Renders a beautiful interactive CLI dashboard with a Dependency Health Score (0-100%), total MB of bloat, colored impact bars, and a ranked table of unused packages.
-3. **ACT** — Prompts the user to auto-remove unused packages via `npm uninstall`, cleaning the repository in one click.
-
----
-
-## Install & Run — One URL, One Paste
-
-### Method 1: `irm` One-Liner (Recommended)
-
-Open PowerShell and paste this single line:
+### Recommended — One-Liner
 
 ```powershell
 irm https://raw.githubusercontent.com/iamaako/bloatray-cli/main/install.ps1 | iex
 ```
 
-**That's it.** The script will:
-1. Check that Node.js and Git are installed
-2. Clone the repo (or detect if you're already inside it)
-3. Install all dependencies
-4. Build the TypeScript CLI
-5. Set up all 6 test demo projects
-6. **Auto-launch the interactive BloatRay terminal**
+This single command will clone, install, build, setup demos, and auto-launch the interactive terminal.
 
-You'll immediately see a **folder picker** — select a project and start scanning.
-
-### Method 2: Already Cloned the Repo?
-
-```powershell
-cd bloatray-cli
-.\install.ps1
-```
-
-Or with Node directly:
-
-```bash
-cd bloatray-cli
-node setup.js
-```
-
-### Method 3: Manual Setup
-
-```bash
-cd bloatray-cli
-npm install
-npm run build
-npm link          # registers 'bloatray' command globally
-```
-
-### After Setup — Run Anytime
-
-```bash
-# Interactive mode — folder picker + action menu
-bloatray
-
-# Direct scan of any project
-bloatray scan --dir test-projects/demo-1-heavy-bloat
-
-# Scan + auto-fix
-bloatray fix --dir test-projects/demo-1-heavy-bloat
-
-# Scan ANY project on your machine
-bloatray scan --dir C:\Users\you\your-project
-
-# Or without npm link:
-node dist/index.js
-```
-
----
-
-## Scanning Other Projects
-
-BloatRay can scan **any** Node.js project on your machine — not just itself. Use the `--dir` flag to point at any directory containing a `package.json`:
-
-```bash
-# Scan any project by path
-node dist/index.js scan --dir /path/to/your/project
-
-# Scan + auto-fix any project
-node dist/index.js fix --dir /path/to/your/project
-
-# Relative paths work too
-node dist/index.js scan --dir ../my-other-project
-
-# Interactive mode — use "Change Directory" to switch between projects
-node dist/index.js
-```
-
-### Interactive Mode — The Full Experience (Default)
-
-When you run `node dist/index.js`, BloatRay launches a **cyberpunk terminal UI** with this flow:
-
-**Step 1: Folder Picker** — Select a project to scan:
-| Option | Description |
-|---|---|
-| **Current Directory** | Scan the folder you're in |
-| **demo-1-heavy-bloat** | Pre-built test: 8 unused deps |
-| **demo-2-clean-project** | Pre-built test: zero bloat |
-| **...all 6 demos** | Auto-detected from `test-projects/` |
-| **Enter custom path...** | Paste or type any project path on your machine |
-
-**Step 2: Action Menu** — Choose what to do:
-| Action | Description |
-|---|---|
-| **Scan & Report** | Detect unused deps, show bloat dashboard |
-| **Scan & Auto-Fix** | Detect + prompt to auto-remove bloat |
-| **Switch Project** | Go back to folder picker |
-| **Exit** | Shutdown BloatRay |
-
-You stay in the loop — scan, fix, switch projects — until you exit.
-
----
-
-## Commands Reference
-
-| Command | Description |
-|---|---|
-| `node dist/index.js` | Launch interactive dashboard (default) |
-| `node dist/index.js scan` | Scan current directory and display report |
-| `node dist/index.js scan --dir <path>` | Scan a specific project directory |
-| `node dist/index.js scan --fix` | Scan + prompt to auto-remove unused |
-| `node dist/index.js fix` | Shortcut for scan + fix |
-| `node dist/index.js fix --dir <path>` | Fix a specific project directory |
-| `node dist/index.js -v` | Show version |
-
-### Flags
-
-| Flag | Description |
-|---|---|
-| `-d, --dir <path>` | Target project directory (defaults to current dir) |
-| `--fix` | Prompt to auto-remove unused packages after scan |
-
----
-
-## Test Demo Projects
-
-6 pre-built test projects are included in `test-projects/` to demonstrate different bloat scenarios:
-
-### Demo 1: Heavy Bloat (`demo-1-heavy-bloat`)
-- **Scenario:** Express app with 10 deps, only 2 are used (`express`, `dotenv`)
-- **Expected:** 8 unused packages, ~8.9 MB of bloat, Health Score ~20% (CRITICAL)
-- **Run:** `npm run test:demo1`
-
-### Demo 2: Clean Project (`demo-2-clean-project`)
-- **Scenario:** Express + cors app where all deps are actually used
-- **Expected:** Zero bloat, Health Score 100% (EXCELLENT)
-- **Run:** `npm run test:demo2`
-
-### Demo 3: DevDependency Bloat (`demo-3-devdep-bloat`)
-- **Scenario:** Fastify app with many unused dev tools (eslint, prettier, husky, etc.)
-- **Expected:** Multiple unused devDeps flagged
-- **Run:** `npm run test:demo3`
-
-### Demo 4: TypeScript Bloat (`demo-4-typescript-bloat`)
-- **Scenario:** TypeScript CLI using zod + commander, but has 6+ unused packages (dayjs, nanoid, inquirer, ora, figlet, boxen)
-- **Expected:** Mixed bloat — unused production + dev packages
-- **Run:** `npm run test:demo4`
-
-### Demo 5: React/Frontend Bloat (`demo-5-react-bloat`)
-- **Scenario:** React app with 15 deps, only 4 used (react, react-dom, react-router-dom, clsx)
-- **Expected:** Heavy bloat from framer-motion, react-icons, react-hook-form, recharts, etc.
-- **Run:** `npm run test:demo5`
-
-### Demo 6: Empty Project (`demo-6-empty-project`)
-- **Scenario:** Edge case — project with zero dependencies
-- **Expected:** Zero bloat, Health Score 100%, graceful handling
-- **Run:** `npm run test:demo6`
-
-### Run All Demos Quickly
-
-```bash
-npm run test:demo1
-npm run test:demo2
-npm run test:demo3
-npm run test:demo4
-npm run test:demo5
-npm run test:demo6
-```
-
----
-
-## Hosting & Distribution
-
-### Option 1: npm Global Install (Recommended)
-
-Publish to npm so anyone can install and run it globally:
-
-```bash
-# Build first
-npm run build
-
-# Login to npm (one-time)
-npm login
-
-# Publish
-npm publish
-
-# Then anyone can install globally:
-npm install -g bloatray-cli
-
-# And run from anywhere:
-bloatray scan --dir /path/to/project
-```
-
-### Option 2: npx (No Install Required)
-
-Once published to npm, users can run it without installing:
-
-```bash
-npx bloatray-cli scan --dir /path/to/project
-```
-
-### Option 3: GitHub Release Binary
-
-1. Push the repo to GitHub
-2. Create a release and attach the built `dist/` folder
-3. Users clone and run:
+### Manual Setup
 
 ```bash
 git clone https://github.com/iamaako/bloatray-cli.git
 cd bloatray-cli
-node setup.js          # One-command setup
-node dist/index.js     # Run
+npm install
+npm run build
+npm link        # registers 'bloatray' as a global command
+bloatray        # run from anywhere
 ```
 
-### Option 4: Docker
+---
 
-Create a `Dockerfile` for containerized usage:
-
-```dockerfile
-FROM node:20-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-ENTRYPOINT ["node", "dist/index.js"]
-```
+## 🎮 Usage
 
 ```bash
-# Build the image
-docker build -t bloatray .
-
-# Scan a project (mount it as a volume)
-docker run -it -v /path/to/project:/target bloatray scan --dir /target
-```
-
-### Option 5: CI/CD Integration
-
-Add BloatRay to your CI pipeline to catch bloat early:
-
-```yaml
-# GitHub Actions example
-- name: Check dependency bloat
-  run: |
-    npx bloatray-cli scan --dir . --fix false
+bloatray                                    # Interactive mode (folder picker + action menu)
+bloatray scan --dir ./my-project            # Scan a specific project
+bloatray fix --dir ./my-project             # Scan + auto-fix
 ```
 
 ---
 
-## Tech Stack
+## 🧪 6 Demo Projects Included
 
-### Core
+Pre-built test scenarios inside `test-projects/`:
 
-| Technology | Purpose |
-|---|---|
-| **Node.js** | Runtime environment |
-| **TypeScript** | Type safety + better DX |
+| Demo | Scenario | Health Score |
+|---|---|---|
+| `demo-1-heavy-bloat` | Express app, 8 unused deps, ~8.9 MB wasted | 🔴 ~20% |
+| `demo-2-clean-project` | All deps used, zero bloat | 🟢 100% |
+| `demo-3-devdep-bloat` | Unused devDependencies (eslint, prettier, etc.) | 🔴 ~14% |
+| `demo-4-typescript-bloat` | TypeScript project with mixed unused deps | 🟡 ~40% |
+| `demo-5-react-bloat` | React app, 15 deps, only 4 used | 🔴 ~6% |
+| `demo-6-empty-project` | Zero dependencies (edge case) | 🟢 100% |
 
-### CLI
-
-| Library | Purpose |
-|---|---|
-| **Commander.js** | CLI framework — commands, flags, help text |
-| **@clack/prompts** | Interactive terminal UI — spinners, selects, confirms |
-| **picocolors** | Terminal colors and styling |
-
-### Analysis
-
-| Library | Purpose |
-|---|---|
-| **depcheck** | Detect unused dependencies by analyzing imports |
-| **fs/promises** | Recursive `node_modules` size calculation |
-| **child_process** | Run `npm uninstall` for auto-cleanup |
-
-### Website
-
-| Technology | Purpose |
-|---|---|
-| **Next.js 16** | React framework (static export) |
-| **Tailwind CSS v4** | Styling |
+```bash
+npm run test:demo1    # Run any demo
+npm run test:demo2
+# ...etc
+```
 
 ---
 
-## Project Structure
+## 🛠️ Tech Stack
+
+| Technology | Role |
+|---|---|
+| ![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white&style=flat-square) | Runtime |
+| ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat-square) | Type safety |
+| ![Commander](https://img.shields.io/badge/-Commander.js-red?style=flat-square) | CLI framework |
+| ![depcheck](https://img.shields.io/badge/-depcheck-orange?style=flat-square) | Unused dep detection |
+| ![@clack/prompts](https://img.shields.io/badge/-@clack/prompts-blueviolet?style=flat-square) | Interactive terminal UI |
+| ![picocolors](https://img.shields.io/badge/-picocolors-green?style=flat-square) | Terminal colors |
+| ![Next.js](https://img.shields.io/badge/-Next.js_16-black?logo=next.js&logoColor=white&style=flat-square) | Showcase website |
+| ![Tailwind](https://img.shields.io/badge/-Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white&style=flat-square) | Website styling |
+
+---
+
+## 📁 Project Structure
 
 ```
 bloatray-cli/
-├── package.json              # Dependencies, bin, scripts
-├── tsconfig.json             # TypeScript config
-├── setup.js                  # One-command setup script
-├── install.ps1               # PowerShell installer
-├── install.cmd               # CMD installer
-├── README.md
 ├── src/
-│   ├── index.ts              # CLI entry + main flow
-│   ├── scanner.ts            # depcheck + size calc
-│   ├── fixer.ts              # npm uninstall logic
-│   └── ui.ts                 # Interactive terminal UI
-├── dist/                     # Compiled output
-├── screenshots/              # README images
-├── website/                  # Showcase site (Next.js)
-│   ├── app/
-│   │   ├── components/       # Nav, Hero, Features, Install, Demos, etc.
-│   │   ├── page.tsx          # Main page
-│   │   ├── layout.tsx        # Root layout
-│   │   └── globals.css       # Styles
-│   └── next.config.ts        # Static export config
-└── test-projects/
-    ├── demo-1-heavy-bloat/
-    ├── demo-2-clean-project/
-    ├── demo-3-devdep-bloat/
-    ├── demo-4-typescript-bloat/
-    ├── demo-5-react-bloat/
-    └── demo-6-empty-project/
+│   ├── index.ts          # CLI entry point + Commander setup
+│   ├── scanner.ts        # depcheck + node_modules size calc
+│   ├── fixer.ts          # npm uninstall auto-cleanup
+│   └── ui.ts             # Terminal UI + health score bars
+├── test-projects/        # 6 demo projects
+├── website/              # Showcase site (Next.js + Tailwind)
+├── screenshots/          # README images
+├── install.ps1           # PowerShell one-liner installer
+├── install.cmd           # CMD installer
+├── setup.js              # Node.js setup script
+├── package.json
+└── tsconfig.json
 ```
 
 ---
 
-## How It Works
+<div align="center">
 
-1. **Scanner** reads `package.json` and uses `depcheck` to analyze all `.ts`, `.tsx`, `.js`, `.jsx` files for `import`/`require` statements
-2. Compares declared dependencies against actual usage to find unused packages
-3. Recursively calculates the real disk size of each unused package folder inside `node_modules/`
-4. **Visualizer** renders an ASCII art banner, health score gradient bar, color-coded impact bars, ranked bloat table, and summary stats
-5. **Fixer** offers an interactive confirm prompt and runs `npm uninstall` to clean up automatically
+**MIT** — Built with ❤️ by **Aarif Khan** for the DX-Ray Hackathon
 
----
+[⬆ Back to Top](#)
 
-## Showcase Website
-
-BloatRay includes a showcase website built with **Next.js + Tailwind CSS** (static export).
-
-```bash
-cd website
-npm install
-npm run dev       # http://localhost:3000
-```
-
-### Deploy to Netlify
-
-| Setting | Value |
-|---|---|
-| **Base directory** | `website` |
-| **Build command** | `npm run build` |
-| **Publish directory** | `website/out` |
-
-The website covers: project overview, 3-step pipeline, install commands, all 6 demo showcases, tech stack, and hackathon Q&A.
-
----
-
-## License
-
-MIT — Built with ♥ by **Aarif Khan** for the DX-Ray Hackathon.
+</div>
