@@ -1,17 +1,16 @@
 # BloatRay — The Dependency X-Ray
 
-> **Track E: Dependency X-Ray** — DX-Ray Hackathon Entry by **Aarif Khan**
+> **Track E: Dependency X-Ray** | DX-Ray Hackathon | Built by **Aarif Khan**
 
-BloatRay scans your Node.js project's dependency tree, visualizes hidden bloat in a stunning interactive CLI dashboard, and offers 1-click auto-cleanup — saving you CI/CD time and disk space.
+Scan, visualize, and auto-clean unused dependency bloat from your Node.js projects. One command to detect hidden bloat, see the damage, and fix it.
 
-```
-  ██████╗ ██╗      ██████╗  █████╗ ████████╗██████╗  █████╗ ██╗   ██╗
-  ██╔══██╗██║     ██╔═══██╗██╔══██╗╚══██╔══╝██╔══██╗██╔══██╗╚██╗ ██╔╝
-  ██████╔╝██║     ██║   ██║███████║   ██║   ██████╔╝███████║ ╚████╔╝
-  ██╔══██╗██║     ██║   ██║██╔══██║   ██║   ██╔══██╗██╔══██║  ╚██╔╝
-  ██████╔╝███████╗╚██████╔╝██║  ██║   ██║   ██║  ██║██║  ██║   ██║
-  ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝
-```
+<p align="center">
+  <img src="screenshots/hero.png" alt="BloatRay Hero" width="48%" />
+  <img src="screenshots/install.png" alt="BloatRay Install" width="48%" />
+</p>
+<p align="center">
+  <img src="screenshots/demos.png" alt="BloatRay Demos" width="97%" />
+</p>
 
 ---
 
@@ -289,15 +288,35 @@ Add BloatRay to your CI pipeline to catch bloat early:
 
 ## Tech Stack
 
+### Core
+
+| Technology | Purpose |
+|---|---|
+| **Node.js** | Runtime environment |
+| **TypeScript** | Type safety + better DX |
+
+### CLI
+
 | Library | Purpose |
 |---|---|
-| **Node.js + TypeScript** | Runtime & type safety |
-| **Commander** | CLI framework with commands & flags |
-| **@clack/prompts** | Beautiful interactive terminal UI |
-| **picocolors** | Terminal styling (colors, bold, dim, etc.) |
-| **depcheck** | Programmatic unused dependency detection |
-| **fs/promises + path** | File system & directory size calculation |
-| **child_process** | Execute `npm uninstall` for auto-cleanup |
+| **Commander.js** | CLI framework — commands, flags, help text |
+| **@clack/prompts** | Interactive terminal UI — spinners, selects, confirms |
+| **picocolors** | Terminal colors and styling |
+
+### Analysis
+
+| Library | Purpose |
+|---|---|
+| **depcheck** | Detect unused dependencies by analyzing imports |
+| **fs/promises** | Recursive `node_modules` size calculation |
+| **child_process** | Run `npm uninstall` for auto-cleanup |
+
+### Website
+
+| Technology | Purpose |
+|---|---|
+| **Next.js 16** | React framework (static export) |
+| **Tailwind CSS v4** | Styling |
 
 ---
 
@@ -305,23 +324,33 @@ Add BloatRay to your CI pipeline to catch bloat early:
 
 ```
 bloatray-cli/
-├── package.json          # Dependencies, bin, scripts
-├── tsconfig.json         # TypeScript configuration
-├── setup.js              # One-command setup script
-├── README.md             # This file
+├── package.json              # Dependencies, bin, scripts
+├── tsconfig.json             # TypeScript config
+├── setup.js                  # One-command setup script
+├── install.ps1               # PowerShell installer
+├── install.cmd               # CMD installer
+├── README.md
 ├── src/
-│   ├── index.ts          # Commander CLI setup + main flow
-│   ├── scanner.ts        # depcheck + node_modules size calc
-│   ├── fixer.ts          # npm uninstall execution logic
-│   └── ui.ts             # @clack/prompts UI + ASCII art
-├── dist/                 # Compiled JS output (after build)
+│   ├── index.ts              # CLI entry + main flow
+│   ├── scanner.ts            # depcheck + size calc
+│   ├── fixer.ts              # npm uninstall logic
+│   └── ui.ts                 # Interactive terminal UI
+├── dist/                     # Compiled output
+├── screenshots/              # README images
+├── website/                  # Showcase site (Next.js)
+│   ├── app/
+│   │   ├── components/       # Nav, Hero, Features, Install, Demos, etc.
+│   │   ├── page.tsx          # Main page
+│   │   ├── layout.tsx        # Root layout
+│   │   └── globals.css       # Styles
+│   └── next.config.ts        # Static export config
 └── test-projects/
-    ├── demo-1-heavy-bloat/       # 8 unused deps, CRITICAL
-    ├── demo-2-clean-project/     # Zero bloat, EXCELLENT
-    ├── demo-3-devdep-bloat/      # Unused devDependencies
-    ├── demo-4-typescript-bloat/  # TypeScript mixed bloat
-    ├── demo-5-react-bloat/       # Frontend/React bloat
-    └── demo-6-empty-project/     # Edge case: no deps
+    ├── demo-1-heavy-bloat/
+    ├── demo-2-clean-project/
+    ├── demo-3-devdep-bloat/
+    ├── demo-4-typescript-bloat/
+    ├── demo-5-react-bloat/
+    └── demo-6-empty-project/
 ```
 
 ---
@@ -338,7 +367,7 @@ bloatray-cli/
 
 ## Showcase Website
 
-BloatRay has a cyberpunk-themed showcase website built with **Next.js + Tailwind CSS**, ready to deploy on Vercel:
+BloatRay includes a showcase website built with **Next.js + Tailwind CSS** (static export).
 
 ```bash
 cd website
@@ -346,13 +375,15 @@ npm install
 npm run dev       # http://localhost:3000
 ```
 
-Deploy to Vercel:
-1. Push the repo to GitHub
-2. Go to [vercel.com/new](https://vercel.com/new)
-3. Import the repo and set **Root Directory** to `website`
-4. Deploy — done!
+### Deploy to Netlify
 
-The website includes: project overview, 3-step pipeline, install commands, all 6 demo showcases, tech stack, and hackathon Q&A.
+| Setting | Value |
+|---|---|
+| **Base directory** | `website` |
+| **Build command** | `npm run build` |
+| **Publish directory** | `website/out` |
+
+The website covers: project overview, 3-step pipeline, install commands, all 6 demo showcases, tech stack, and hackathon Q&A.
 
 ---
 
