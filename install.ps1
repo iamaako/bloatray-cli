@@ -4,7 +4,8 @@
 #  irm https://raw.githubusercontent.com/iamaako/bloatray-cli/main/install.ps1 | iex
 # ==================================================================
 
-$ErrorActionPreference = "Stop"
+# Do NOT use "Stop" — git writes progress to stderr which PowerShell treats as error
+$ErrorActionPreference = "SilentlyContinue"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 function Write-Step {
@@ -101,14 +102,17 @@ if (-not $installDir) {
         Write-Host "  [OK] Found existing clone on Desktop" -ForegroundColor Green
     } else {
         Write-Host "  Cloning to Desktop..." -ForegroundColor DarkGray
-        git clone https://github.com/iamaako/bloatray-cli.git $safeDir 2>&1 | Out-Null
-        if ($LASTEXITCODE -ne 0) {
+        # Use Start-Process to avoid PowerShell treating git's stderr as error
+        Start-Process -FilePath "git" -ArgumentList "clone","https://github.com/iamaako/bloatray-cli.git",$safeDir -Wait -NoNewWindow
+        if (Test-Path (Join-Path $safeDir "package.json")) {
+            $installDir = $safeDir
+            Write-Host "  [OK] Cloned to $installDir" -ForegroundColor Green
+        } else {
             Write-Host "  [X] Clone failed. Try manually:" -ForegroundColor Red
-            Write-Host "      cd Desktop; git clone https://github.com/iamaako/bloatray-cli.git" -ForegroundColor Yellow
+            Write-Host "      cd ~\Desktop" -ForegroundColor Yellow
+            Write-Host "      git clone https://github.com/iamaako/bloatray-cli.git" -ForegroundColor Yellow
             exit 1
         }
-        $installDir = $safeDir
-        Write-Host "  [OK] Cloned to $installDir" -ForegroundColor Green
     }
 }
 
@@ -116,12 +120,12 @@ Set-Location $installDir
 
 # --- Install dependencies ---
 Write-Step 3 5 "Installing dependencies..."
-npm install 2>&1 | Out-Null
+Start-Process -FilePath "npm" -ArgumentList "install" -Wait -NoNewWindow
 Write-Host "  [OK] Dependencies installed" -ForegroundColor Green
 
 # --- Build ---
 Write-Step 4 5 "Building BloatRay CLI..."
-npm run build 2>&1 | Out-Null
+Start-Process -FilePath "npm" -ArgumentList "run","build" -Wait -NoNewWindow
 Write-Host "  [OK] TypeScript compiled to dist/" -ForegroundColor Green
 
 # --- Setup test projects ---
@@ -135,11 +139,7 @@ if (Test-Path $testDir) {
     foreach ($demo in $demos) {
         Write-Host "  [*] " -NoNewline -ForegroundColor Magenta
         Write-Host $demo.Name -ForegroundColor White
-        try {
-            npm install --ignore-scripts --prefix $demo.FullName 2>&1 | Out-Null
-        } catch {
-            Write-Host "      Some packages skipped (expected)" -ForegroundColor Yellow
-        }
+        Start-Process -FilePath "npm" -ArgumentList "install","--ignore-scripts","--prefix",$demo.FullName -Wait -NoNewWindow
     }
 }
 Write-Host "  [OK] All test projects ready" -ForegroundColor Green
