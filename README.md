@@ -73,23 +73,26 @@ node setup.js
 cd bloatray-cli
 npm install
 npm run build
-node dist/index.js
+npm link          # registers 'bloatray' command globally
 ```
 
 ### After Setup — Run Anytime
 
 ```bash
 # Interactive mode — folder picker + action menu
-node dist/index.js
+bloatray
 
 # Direct scan of any project
-node dist/index.js scan --dir test-projects/demo-1-heavy-bloat
+bloatray scan --dir test-projects/demo-1-heavy-bloat
 
 # Scan + auto-fix
-node dist/index.js fix --dir test-projects/demo-1-heavy-bloat
+bloatray fix --dir test-projects/demo-1-heavy-bloat
 
 # Scan ANY project on your machine
-node dist/index.js scan --dir C:\Users\you\your-project
+bloatray scan --dir C:\Users\you\your-project
+
+# Or without npm link:
+node dist/index.js
 ```
 
 ---
@@ -330,6 +333,26 @@ bloatray-cli/
 3. Recursively calculates the real disk size of each unused package folder inside `node_modules/`
 4. **Visualizer** renders an ASCII art banner, health score gradient bar, color-coded impact bars, ranked bloat table, and summary stats
 5. **Fixer** offers an interactive confirm prompt and runs `npm uninstall` to clean up automatically
+
+---
+
+## Showcase Website
+
+BloatRay has a cyberpunk-themed showcase website built with **Next.js + Tailwind CSS**, ready to deploy on Vercel:
+
+```bash
+cd website
+npm install
+npm run dev       # http://localhost:3000
+```
+
+Deploy to Vercel:
+1. Push the repo to GitHub
+2. Go to [vercel.com/new](https://vercel.com/new)
+3. Import the repo and set **Root Directory** to `website`
+4. Deploy — done!
+
+The website includes: project overview, 3-step pipeline, install commands, all 6 demo showcases, tech stack, and hackathon Q&A.
 
 ---
 

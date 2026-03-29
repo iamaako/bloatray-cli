@@ -6,3 +6,8 @@ Thumbs.db
 
 # Test project node_modules
 test-projects/*/node_modules/
+
+# Website build artifacts
+website/node_modules/
+website/.next/
+website/out/

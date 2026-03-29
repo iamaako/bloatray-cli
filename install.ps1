@@ -49,7 +49,7 @@ Write-Host "  +================================================================+
 Write-Host ""
 
 # --- Check prerequisites ---
-Write-Step 1 5 "Checking prerequisites..."
+Write-Step 1 6 "Checking prerequisites..."
 
 $nodeVersion = $null
 try { $nodeVersion = (node -v 2>$null) } catch {}
@@ -70,7 +70,7 @@ if (-not $gitVersion) {
 Write-Host "  [OK] $gitVersion" -ForegroundColor Green
 
 # --- Locate project ---
-Write-Step 2 5 "Locating BloatRay project..."
+Write-Step 2 6 "Locating BloatRay project..."
 
 $installDir = $null
 
@@ -119,17 +119,20 @@ if (-not $installDir) {
 Set-Location $installDir
 
 # --- Install dependencies ---
-Write-Step 3 5 "Installing dependencies..."
+Write-Step 3 6 "Installing dependencies..."
 Start-Process -FilePath "npm" -ArgumentList "install" -Wait -NoNewWindow
 Write-Host "  [OK] Dependencies installed" -ForegroundColor Green
 
-# --- Build ---
-Write-Step 4 5 "Building BloatRay CLI..."
+# --- Build + Link ---
+Write-Step 4 6 "Building BloatRay CLI..."
 Start-Process -FilePath "npm" -ArgumentList "run","build" -Wait -NoNewWindow
 Write-Host "  [OK] TypeScript compiled to dist/" -ForegroundColor Green
+Write-Host "  Linking global command..." -ForegroundColor DarkGray
+Start-Process -FilePath "npm" -ArgumentList "link" -Wait -NoNewWindow
+Write-Host "  [OK] 'bloatray' command registered globally" -ForegroundColor Green
 
 # --- Setup test projects ---
-Write-Step 5 5 "Setting up test demo projects..."
+Write-Step 5 6 "Setting up test demo projects..."
 
 $testDir = Join-Path $installDir "test-projects"
 if (Test-Path $testDir) {
@@ -145,6 +148,7 @@ if (Test-Path $testDir) {
 Write-Host "  [OK] All test projects ready" -ForegroundColor Green
 
 # --- Launch ---
+Write-Step 6 6 "Launching BloatRay..."
 Write-Host ""
 Write-Host "  +================================================================+" -ForegroundColor Cyan
 Write-Host "  |  " -NoNewline -ForegroundColor Cyan
@@ -157,9 +161,9 @@ Write-Host "Launching BloatRay interactive terminal..." -NoNewline -ForegroundCo
 Write-Host "                  |" -ForegroundColor Cyan
 Write-Host "  |                                                                |" -ForegroundColor Cyan
 Write-Host "  |  " -NoNewline -ForegroundColor Cyan
-Write-Host "Next time run: " -NoNewline -ForegroundColor DarkGray
-Write-Host "node dist/index.js" -NoNewline -ForegroundColor Cyan
-Write-Host "                          |" -ForegroundColor Cyan
+Write-Host "Next time just run: " -NoNewline -ForegroundColor DarkGray
+Write-Host "bloatray" -NoNewline -ForegroundColor Cyan
+Write-Host "                               |" -ForegroundColor Cyan
 Write-Host "  |                                                                |" -ForegroundColor Cyan
 Write-Host "  +================================================================+" -ForegroundColor Cyan
 Write-Host ""

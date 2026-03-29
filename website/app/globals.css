@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0a0f;
+  --bg-card: #12121a;
+  --neon-cyan: #00f0ff;
+  --neon-magenta: #ff00ff;
+  --neon-green: #39ff14;
+  --neon-red: #ff3131;
+  --neon-yellow: #ffe600;
+  --text: #e0e0e8;
+  --text-dim: #6b6b80;
+  --border: #1e1e2e;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono), 'Courier New', monospace;
+  overflow-x: hidden;
+}
+
+/* Scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+}
+
+/* Neon glow text */
+.neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan), 0 0 20px rgba(0, 240, 255, 0.3); }
+.neon-magenta { color: var(--neon-magenta); text-shadow: 0 0 8px var(--neon-magenta), 0 0 20px rgba(255, 0, 255, 0.3); }
+.neon-green { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green), 0 0 20px rgba(57, 255, 20, 0.3); }
+.neon-red { color: var(--neon-red); text-shadow: 0 0 8px var(--neon-red); }
+.neon-yellow { color: var(--neon-yellow); text-shadow: 0 0 8px var(--neon-yellow); }
+
+/* Glitch animation */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, -2px); }
+  80% { transform: translate(1px, 2px); }
+}
+.glitch-hover:hover { animation: glitch 0.3s ease infinite; }
+
+/* Neon border card */
+.cyber-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  position: relative;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.cyber-card:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.15), inset 0 0 15px rgba(0, 240, 255, 0.03);
+}
+
+/* Neon button */
+.cyber-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: transparent;
+  border: 1px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  font-family: var(--font-mono), monospace;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.cyber-btn:hover {
+  background: var(--neon-cyan);
+  color: var(--bg);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+}
+.cyber-btn-mag {
+  border-color: var(--neon-magenta);
+  color: var(--neon-magenta);
+}
+.cyber-btn-mag:hover {
+  background: var(--neon-magenta);
+  color: var(--bg);
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+}
+
+/* Code block */
+.cyber-code {
+  background: #0d0d15;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px 20px;
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  color: var(--neon-green);
+  overflow-x: auto;
+  position: relative;
+}
+.cyber-code .prompt { color: var(--neon-cyan); }
+.cyber-code .comment { color: var(--text-dim); }
+
+/* Pulse animation */
+@keyframes pulse-neon {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.pulse { animation: pulse-neon 2s ease-in-out infinite; }
+
+/* Gradient line */
+.neon-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-magenta), transparent);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Terminal typing cursor */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.cursor::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+  color: var(--neon-cyan);
+}

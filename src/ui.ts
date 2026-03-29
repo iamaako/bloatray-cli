@@ -102,7 +102,8 @@ function neonBar(value: number, max: number, width: number = 30): string {
 
 function renderHealthBar(score: number): string {
   const totalBlocks = 25;
-  const filledBlocks = Math.round((score / 100) * totalBlocks);
+  const clampedScore = Math.max(0, Math.min(100, score));
+  const filledBlocks = Math.round((clampedScore / 100) * totalBlocks);
   const emptyBlocks = totalBlocks - filledBlocks;
 
   let color: (text: string) => string;

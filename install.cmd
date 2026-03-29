@@ -18,7 +18,7 @@ echo   +================================================================+
 echo.
 
 :: Step 1: Check prerequisites
-echo   [ 1/5 ] Checking prerequisites...
+echo   [ 1/6 ] Checking prerequisites...
 echo   ============================================================
 
 where node >nul 2>&1
@@ -39,7 +39,7 @@ for /f "tokens=*" %%i in ('git --version') do echo   [OK] %%i
 
 :: Step 2: Locate project
 echo.
-echo   [ 2/5 ] Locating BloatRay project...
+echo   [ 2/6 ] Locating BloatRay project...
 echo   ============================================================
 
 set "INSTALL_DIR="
@@ -85,21 +85,24 @@ cd /d "%INSTALL_DIR%"
 
 :: Step 3: Install dependencies
 echo.
-echo   [ 3/5 ] Installing dependencies...
+echo   [ 3/6 ] Installing dependencies...
 echo   ============================================================
 call npm install
 echo   [OK] Dependencies installed
 
 :: Step 4: Build
 echo.
-echo   [ 4/5 ] Building BloatRay CLI...
+echo   [ 4/6 ] Building BloatRay CLI...
 echo   ============================================================
 call npm run build
 echo   [OK] TypeScript compiled to dist/
+echo   Linking global command...
+call npm link >nul 2>&1
+echo   [OK] 'bloatray' command registered globally
 
 :: Step 5: Setup test projects
 echo.
-echo   [ 5/5 ] Setting up test demo projects...
+echo   [ 5/6 ] Setting up test demo projects...
 echo   ============================================================
 
 for /d %%D in ("test-projects\*") do (
@@ -112,7 +115,10 @@ for /d %%D in ("test-projects\*") do (
 )
 echo   [OK] All test projects ready
 
-:: Launch
+:: Step 6: Launch
+echo.
+echo   [ 6/6 ] Launching BloatRay...
+echo   ============================================================
 echo.
 echo   +================================================================+
 echo   ^|  [OK] ALL SYSTEMS READY                                       ^|
@@ -120,7 +126,7 @@ echo   +================================================================+
 echo   ^|                                                                ^|
 echo   ^|  Launching BloatRay interactive terminal...                    ^|
 echo   ^|                                                                ^|
-echo   ^|  Next time run: node dist/index.js                             ^|
+echo   ^|  Next time just run:  bloatray                                 ^|
 echo   ^|                                                                ^|
 echo   +================================================================+
 echo.
